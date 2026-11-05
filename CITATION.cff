@@ -1,0 +1,25 @@
+cff-version: 1.2.0
+message: "If you use Veritale, please cite it as below."
+title: "Veritale: An Evidence-Graded Skill for Telling History as a Story with Large Language Models"
+type: software
+authors:
+  - family-names: Rajak
+    given-names: Rupesh
+    affiliation: "Indian Institute of Technology (Indian School of Mines) Dhanbad"
+    email: 25ma0009@iitism.ac.in
+date-released: 2026-11-06
+version: 1.0.0
+license: MIT
+repository-code: "https://github.com/Rupeshrajak456/skill-veritale"
+url: "https://rupeshrajak456.github.io/skill-veritale/"
+keywords:
+  - digital humanities
+  - large language models
+  - agent skills
+  - historiography
+  - source criticism
+  - evidence grading
+abstract: >-
+  Veritale is a modular Agent Skill, written in Markdown, that lets an AI
+  agent turn historical events and dates into a timeline and a story while
+  labelling every claim as Verified, Disputed or Legend.

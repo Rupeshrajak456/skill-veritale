@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Veritale: Evidence-Graded History</title>
+<meta name="description" content="Veritale is a modular skill file that lets an AI agent turn historical events and dates into a timeline and a story, labelling every claim as Verified, Disputed or Legend. An academic project by Rupesh Rajak, IIT (ISM) Dhanbad.">
+<meta name="author" content="Rupesh Rajak">
+<meta property="og:title" content="Veritale: Evidence-Graded History">
+<meta property="og:description" content="A modular skill that lets an AI agent tell history as a story without passing legend off as fact.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='29' fill='%232B4A9B'/%3E%3Ccircle cx='32' cy='32' r='22' fill='none' stroke='%23F2F4F1' stroke-width='2' stroke-dasharray='3 3'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='Georgia,serif' font-size='28' fill='%23F2F4F1'%3EV%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=JetBrains+Mono:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,300..700;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script>
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem('vt-theme'); } catch (e) {}
+    if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+  })();
+</script>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+
+<header class="topbar" id="top">
+  <div class="topbar-inner">
+    <a class="wordmark" href="#top" aria-label="Veritale, back to top">
+      <span class="seal-mini" aria-hidden="true">V</span>Veritale
+    </a>
+    <nav class="nav" id="nav" aria-label="Sections">
+      <a href="#abstract">Abstract</a>
+      <a href="#questions">Questions</a>
+      <a href="#skill">The skill</a>
+      <a href="#demo">Demonstration</a>
+      <a href="#visualisation">Visualisation</a>
+      <a href="#analysis">Analysis</a>
+      <a href="#discussion">Discussion</a>
+      <a href="#limitations">Limitations</a>
+      <a href="#cite">Cite</a>
+      <a href="#author">Author</a>
+      <a class="nav-gh" href="https://github.com/Rupeshrajak456/skill-veritale" target="_blank" rel="noopener">
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub repository
+      </a>
+    </nav>
+    <div class="topbar-tools">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Switch between day and night mode">
+        <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="12" r="4.2" fill="none" stroke="currentColor" stroke-width="1.6"/><g stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></g></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        <span class="theme-label">Night</span>
+      </button>
+      <button class="menu-btn" id="menu-btn" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <p class="hero-kicker">An academic project in Digital Humanities</p>
+      <h1 class="hero-title">Veritale</h1>
+      <p class="hero-sub">An evidence-graded skill that lets an AI agent tell history as a story without passing legend off as fact.</p>
+
+      <figure class="specimen" aria-label="Example sentence with evidence labels">
+        <p class="specimen-text" id="specimen">
+          On 14 October 1066 <span class="spec v">King Harold died at Hastings<b class="stamp" data-l="Verified">Verified</b></span>,
+          <span class="spec d">perhaps struck by an arrow in the eye<b class="stamp" data-l="Disputed">Disputed</b></span>,
+          and <span class="spec l">his body was found by Edith Swan-neck<b class="stamp" data-l="Legend">Legend</b></span>.
+        </p>
+        <figcaption>One sentence, three kinds of evidence. Veritale makes the difference visible.</figcaption>
+      </figure>
+
+      <div class="hero-actions">
+        <a class="btn btn-solid" href="#demo">Try the demonstration</a>
+        <a class="btn" href="#abstract">Read the abstract</a>
+        <a class="btn" href="SKILL.md" download>Download SKILL.md</a>
+      </div>
+    </div>
+
+    <aside class="hero-card" aria-label="Project details">
+      <dl>
+        <div><dt>Title</dt><dd>Veritale: An Evidence-Graded Skill for Telling History as a Story with Large Language Models</dd></div>
+        <div><dt>Author</dt><dd><a href="#author">Rupesh Rajak</a></dd></div>
+        <div><dt>Programme</dt><dd>M.A., Digital Humanities and Social Sciences</dd></div>
+        <div><dt>Institution</dt><dd>Indian Institute of Technology (Indian School of Mines) Dhanbad</dd></div>
+        <div><dt>Year</dt><dd>2026</dd></div>
+        <div><dt>Format</dt><dd>Agent Skill in Markdown, one entry file and seven modules</dd></div>
+        <div><dt>Source</dt><dd><a href="https://github.com/Rupeshrajak456/skill-veritale" target="_blank" rel="noopener">github.com/Rupeshrajak456/skill-veritale</a></dd></div>
+      </dl>
+      <div class="legend-key">
+        <span class="key v"><i></i>Verified: historians broadly agree</span>
+        <span class="key d"><i></i>Disputed: sources disagree</span>
+        <span class="key l"><i></i>Legend: late or traditional source only</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- CONTENTS -->
+<nav class="wrap contents" aria-label="Contents">
+  <h2 class="contents-title">Contents</h2>
+  <ol>
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#objectives">Objectives</a></li>
+    <li><a href="#questions">Research questions</a></li>
+    <li><a href="#skill">The skill and its modules</a></li>
+    <li><a href="#demo">Live demonstration</a></li>
+    <li><a href="#visualisation">Visualisation</a></li>
+    <li><a href="#method">Methodology</a></li>
+    <li><a href="#analysis">Analysis</a></li>
+    <li><a href="#discussion">Discussion</a></li>
+    <li><a href="#limitations">Limitations</a></li>
+    <li><a href="#conclusion">Conclusion and future work</a></li>
+    <li><a href="#use">Using the skill</a></li>
+    <li><a href="#references">References</a></li>
+    <li><a href="#cite">Cite this project</a></li>
+    <li><a href="#author">About the author</a></li>
+  </ol>
+</nav>
+
+<!-- 1 ABSTRACT -->
+<section class="sec" id="abstract">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§1</div>
+    <div class="sec-body prose">
+      <h2>Abstract</h2>
+      <p>Large language models are now everyday tools for learning and writing about history, and they are very good at telling stories. That strength is also a weakness. Asked about a famous event, a model will usually blend well-attested facts, open scholarly disputes and late legends into one smooth narrative, and the reader cannot see the joins.</p>
+      <p>This project presents Veritale, a skill file that lets an AI agent turn historical events and dates into a timeline and a story while labelling every claim as Verified, Disputed or Legend. The skill is written in Markdown and follows the Agent Skills format. A short entry file, SKILL.md, directs the agent through six modules: intake, fact table, evidence grading, timeline, narrative, and an uncertainty note with a self-check. The agent opens each module only when it reaches that step.</p>
+      <p>The design was tried out on two case studies with well-known source problems: the Norman Conquest of 1066 and Ashoka's Kalinga war of c. 261 BCE. Together they produced 35 graded claims, of which 18 were Verified, 9 Disputed and 8 Legend, and every factual claim in the two stories could be traced back to a row in the fact table. The modular layout meant the agent read between 51 and 60 per cent of the skill's text for a typical task, instead of all of it.</p>
+      <p>The project argues that source criticism, one of the oldest habits of the historian's craft, can be written down as plain instructions that an AI agent can follow. It also sets out the limits of the approach, above all the agent's dependence on its own memory of the sources.</p>
+      <p class="keywords"><strong>Keywords:</strong> digital humanities, large language models, agent skills, historiography, source criticism, evidence grading, hallucination, modular prompt design</p>
+    </div>
+  </div>
+</section>
+
+<!-- 2 INTRODUCTION -->
+<section class="sec" id="introduction">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§2</div>
+    <div class="sec-body prose">
+      <h2>Introduction</h2>
+      <p>Ask a chatbot how King Harold died and you will probably be told that an arrow hit him in the eye. Ask how Ashoka changed after Kalinga and you may read that he walked across the battlefield, wept, and became a Buddhist. The first story is disputed. The second has no early source at all. Neither answer is a hallucination in the usual sense, because both stories really do appear in books. The trouble is that the model tells them in the same confident voice it uses for dates nobody doubts.</p>
+      <p>Historians have long had a way of dealing with this. We ask where a claim comes from, how close that source stood to the event, and who else says the same thing. Marc Bloch described this questioning as the core of the historian's craft, and Sam Wineburg later showed how differently trained historians and school students read the same documents. Language models do not question their sources unless they are told to, and even then they do it unevenly.</p>
+      <p>Agent Skills offer a practical way to tell them. A skill is a folder of instructions, written in Markdown, that an agent loads when a task calls for it (Anthropic, 2025). At first the agent sees only a short description. It opens the full instructions when the task matches, and any further files only when the instructions point to them. Because of this layered loading, a skill can be detailed without crowding the model's working context.</p>
+      <p>I studied History before moving into digital humanities, and this project grew out of a simple wish: to let an AI tell a good story without hiding the evidence behind it. The name Veritale joins <em>veri-</em>, from the Latin for truth, with <em>tale</em>. The aim is a story that keeps faith with its sources.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3 OBJECTIVES -->
+<section class="sec" id="objectives">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§3</div>
+    <div class="sec-body">
+      <div class="prose"><h2>Project objectives</h2></div>
+      <ol class="objectives">
+        <li><span>To design a reusable skill file that turns historical events and dates into a graded timeline and a readable story.</span></li>
+        <li><span>To define a three-label scheme (Verified, Disputed and Legend) with ordered decision steps that an AI agent can apply the same way each time.</span></li>
+        <li><span>To split the skill into modules that the agent loads only when needed, and to measure how much reading this saves.</span></li>
+        <li><span>To test the skill on two case studies from different regions and periods, each with known disputes and legends.</span></li>
+        <li><span>To publish the files, the method and the limits on an open website that others can read, cite and build on.</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 4 RESEARCH QUESTIONS -->
+<section class="sec" id="questions">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§4</div>
+    <div class="sec-body">
+      <div class="prose"><h2>Research questions</h2>
+        <p>The project is built around two questions. The first is about history; the second is about design.</p>
+      </div>
+      <div class="rq-pair">
+        <article class="rq">
+          <p class="rq-tag">RQ1</p>
+          <h3>Can a written skill file make an AI agent separate verified historical facts from disputed claims and legends when it turns events and dates into a story?</h3>
+          <p>Answered in <a href="#rq1">§9.1</a> with the label counts, the claim splits and the traceability check from both case studies.</p>
+        </article>
+        <article class="rq">
+          <p class="rq-tag">RQ2</p>
+          <h3>How does splitting the skill into modules change how much instruction the agent must read, and how easy the skill is to check and revise?</h3>
+          <p>Answered in <a href="#rq2">§9.2</a> with word counts for each file and for each mode of use.</p>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 5 THE SKILL -->
+<section class="sec sec-wide" id="skill">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§5</div>
+    <div class="sec-body">
+      <div class="prose">
+        <h2>The skill and its modules</h2>
+        <p>Veritale has one entry file and seven supporting files. SKILL.md is short on purpose. It names the three labels, lists seven hard rules, and tells the agent which module to open at each step. The modules hold the detail, and each one follows the same pattern: purpose, steps, rules, output and checks.</p>
+      </div>
+
+      <figure class="tiers" aria-label="How the agent loads the skill in three layers">
+        <div class="tier t1">
+          <span class="tier-n">Layer 1</span>
+          <div><strong>Name and description</strong><p>Always visible to the agent, so it knows when the skill applies.</p></div>
+          <span class="tier-w" data-words="desc">45 words</span>
+        </div>
+        <div class="tier t2">
+          <span class="tier-n">Layer 2</span>
+          <div><strong>SKILL.md</strong><p>Read when a history request matches the description.</p></div>
+          <span class="tier-w" data-words="SKILL.md">759 words</span>
+        </div>
+        <div class="tier t3">
+          <span class="tier-n">Layer 3</span>
+          <div><strong>Modules 1 to 6, and examples</strong><p>Opened one at a time, only at the step that needs them.</p></div>
+          <span class="tier-w" data-words="modules">4,693 words</span>
+        </div>
+        <figcaption>Progressive disclosure: the agent reads more only when the task needs more.</figcaption>
+      </figure>
+
+      <div class="explorer" id="explorer">
+        <div class="explorer-list" role="tablist" aria-label="Skill files" id="explorer-list"></div>
+        <div class="explorer-view">
+          <div class="explorer-head" id="explorer-head"></div>
+          <div class="md" id="explorer-md" tabindex="0" aria-live="polite"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 6 DEMO -->
+<section class="sec sec-wide sec-demo" id="demo">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§6</div>
+    <div class="sec-body">
+      <div class="prose">
+        <h2>Live demonstration</h2>
+        <p>Choose a case and a mode, then step through the skill as an agent would. Each step opens one module and shows what it produces. The meter on the right counts how much of the skill the agent has read so far.</p>
+      </div>
+
+      <div class="demo" id="demo-app">
+        <div class="demo-controls">
+          <div class="field">
+            <span class="field-label" id="lbl-case">Case study</span>
+            <div class="seg" role="radiogroup" aria-labelledby="lbl-case" id="demo-case"></div>
+          </div>
+          <div class="field">
+            <span class="field-label" id="lbl-mode">Mode</span>
+            <div class="seg" role="radiogroup" aria-labelledby="lbl-mode" id="demo-mode">
+              <button type="button" role="radio" data-mode="full" aria-checked="true">Full</button>
+              <button type="button" role="radio" data-mode="timeline" aria-checked="false">Timeline only</button>
+              <button type="button" role="radio" data-mode="story" aria-checked="false">Story only</button>
+            </div>
+          </div>
+          <div class="demo-buttons">
+            <button type="button" class="btn btn-solid" id="demo-run">Run all steps</button>
+            <button type="button" class="btn" id="demo-next">Next step</button>
+            <button type="button" class="btn btn-quiet" id="demo-reset">Reset</button>
+          </div>
+        </div>
+
+        <div class="demo-request">
+          <span class="req-who">User request</span>
+          <p id="demo-request-text"></p>
+        </div>
+
+        <div class="demo-body">
+          <ol class="stepper" id="demo-stepper" aria-label="Skill steps"></ol>
+          <div class="stage" id="demo-stage" aria-live="polite"></div>
+          <aside class="meter" aria-label="Instruction read so far">
+            <p class="meter-title">Skill text read</p>
+            <div class="meter-gauge"><div class="meter-fill" id="meter-fill"></div></div>
+            <p class="meter-num"><span id="meter-words">0</span> of <span id="meter-total">0</span> words</p>
+            <p class="meter-note" id="meter-note">A single-file skill would load everything at the start.</p>
+            <ul class="meter-files" id="meter-files"></ul>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 7 VISUALISATION -->
+<section class="sec sec-wide" id="visualisation">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§7</div>
+    <div class="sec-body">
+      <div class="prose">
+        <h2>Visualisation of the extraction</h2>
+        <p>These views draw on every claim the skill extracted and graded in the two case studies. Use the filters to isolate one kind of evidence, and hover over or tab to any mark to see its source.</p>
+      </div>
+
+      <div class="viz">
+        <div class="viz-bar">
+          <div class="tabs" role="tablist" aria-label="Visualisation views" id="viz-tabs">
+            <button role="tab" aria-selected="true" aria-controls="v-timeline" id="t-timeline">Graded timeline</button>
+            <button role="tab" aria-selected="false" aria-controls="v-mix" id="t-mix">Label mix</button>
+            <button role="tab" aria-selected="false" aria-controls="v-ribbon" id="t-ribbon">Story ribbon</button>
+            <button role="tab" aria-selected="false" aria-controls="v-load" id="t-load">Instruction load</button>
+          </div>
+          <div class="seg seg-small" role="radiogroup" aria-label="Case study" id="viz-case"></div>
+        </div>
+
+        <div class="viz-panel" role="tabpanel" id="v-timeline" aria-labelledby="t-timeline">
+          <div class="filters" id="tl-filters" role="group" aria-label="Show labels">
+            <button type="button" class="chip v" aria-pressed="true" data-l="Verified"><i></i>Verified <b></b></button>
+            <button type="button" class="chip d" aria-pressed="true" data-l="Disputed"><i></i>Disputed <b></b></button>
+            <button type="button" class="chip l" aria-pressed="true" data-l="Legend"><i></i>Legend <b></b></button>
+          </div>
+          <ol class="gtl" id="gtl"></ol>
+        </div>
+
+        <div class="viz-panel" role="tabpanel" id="v-mix" aria-labelledby="t-mix" hidden>
+          <div class="mix" id="mix"></div>
+          <p class="viz-note">Each ring shows the share of graded claims under each label. The total covers both case studies.</p>
+        </div>
+
+        <div class="viz-panel" role="tabpanel" id="v-ribbon" aria-labelledby="t-ribbon" hidden>
+          <div id="ribbon"></div>
+          <p class="viz-note">Each segment is one claim in the story, in reading order. Its width is the length of the text used to tell it. Grey segments are linking sentences that add no new claim.</p>
+        </div>
+
+        <div class="viz-panel" role="tabpanel" id="v-load" aria-labelledby="t-load" hidden>
+          <div class="load-grid">
+            <div>
+              <h3 class="viz-h">Words in each file</h3>
+              <div id="load-files" class="bars"></div>
+            </div>
+            <div>
+              <h3 class="viz-h">Words the agent reads, by mode</h3>
+              <div id="load-modes" class="bars"></div>
+            </div>
+          </div>
+          <p class="viz-note">Counts are taken live from the skill files. Words stand in for tokens here, so treat the figures as relative, not exact.</p>
+        </div>
+        <div class="tip" id="tip" role="tooltip" hidden></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 8 METHOD -->
+<section class="sec" id="method">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§8</div>
+    <div class="sec-body prose">
+      <h2>Methodology</h2>
+      <h3>Design approach</h3>
+      <p>The work followed a design-based approach. I began with the questions a history teacher asks of any source, then rewrote them as steps an agent could carry out without help. Wineburg's heuristics of sourcing and corroboration were the starting point: check who wrote a document and when, and check whether other documents agree. Distance in time became the test for the Legend label, and disagreement between credible sources became the test for Disputed.</p>
+      <h3>Choice of format</h3>
+      <p>The skill follows the Agent Skills format. SKILL.md opens with a block of metadata holding the name and a description of when to use the skill. The body sets out the workflow, and the supporting files hold the detail. I kept SKILL.md under 80 lines so that it could act as a map rather than a manual.</p>
+      <h3>The label scheme</h3>
+      <p>Evidence grading is common in medicine, where the GRADE system rates how far a body of evidence can be trusted (Guyatt et al., 2008). Veritale borrows the idea and keeps it small. Three labels are enough for a school pupil to understand, and they map onto the distinctions historians already make between agreed fact, open debate and later tradition.</p>
+      <h3>Case selection</h3>
+      <p>The two cases were chosen because they differ in almost every way that matters for source criticism. Hastings rests on chronicles, a woven hanging and later monastic histories, all from western Europe. The Kalinga war rests on royal inscriptions in Prakrit, on Buddhist texts written centuries afterwards, and on colonial-era decipherment. Both topics carry famous stories with weak support, which made them a fair test.</p>
+      <h3>Procedure</h3>
+      <ol>
+        <li>Run the skill on each case in full mode, one module at a time, and keep the output of every step.</li>
+        <li>Check each graded claim by hand against standard scholarship: Morillo (1996), Lawson (2002) and Davis and Chibnall (1998) for Hastings; Thapar (1961), Strong (1983) and Hultzsch (1925) for Ashoka.</li>
+        <li>Count the labels, and confirm that every factual claim in each story links to a row in the fact table.</li>
+        <li>Count the words in each file and work out how much the agent reads in each mode.</li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 9 ANALYSIS -->
+<section class="sec" id="analysis">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§9</div>
+    <div class="sec-body">
+      <div class="prose">
+        <h2>Analysis</h2>
+      </div>
+
+      <div class="figures" aria-label="Key figures from the case studies">
+        <div class="fig"><span class="fig-n" data-count="35">35</span><span class="fig-t">claims graded across two cases</span></div>
+        <div class="fig v"><span class="fig-n" data-count="18">18</span><span class="fig-t">Verified</span></div>
+        <div class="fig d"><span class="fig-n" data-count="9">9</span><span class="fig-t">Disputed</span></div>
+        <div class="fig l"><span class="fig-n" data-count="8">8</span><span class="fig-t">Legend</span></div>
+      </div>
+
+      <div class="prose">
+        <h3 id="rq1">9.1 RQ1: separating fact, dispute and legend</h3>
+        <p>The skill produced 18 graded claims for Hastings (9 Verified, 5 Disputed and 4 Legend) and 17 for the Kalinga war (9 Verified, 4 Disputed and 4 Legend). Every famous anecdote in the two topics survived into the story, but none of them appeared in a plain factual voice. The lone axeman at Stamford Bridge, William's fall on the beach, Edith Swan-neck, the altar at Battle Abbey, the ninety-nine brothers, "Ashoka's hell", the converting monk and the 84,000 stupas were all labelled Legend and introduced with words such as "a later story says".</p>
+        <p>The most useful rule turned out to be the smallest one. Module 2 tells the agent to split compound claims. That rule turned "Harold died at Hastings from an arrow" into two rows: his death, which is Verified, and the arrow, which is Disputed. It did the same for the casualty figures in Ashoka's Rock Edict XIII. The claim that the edict gives those numbers is Verified, while the claim that the numbers are a true count is Disputed. Without the split, the agent would have had to give each sentence a single label, and that label would have been either too strong or too weak.</p>
+        <p>Traceability held in both stories. All 35 claims appear in the narratives, and the build check found no factual statement outside the fact table. The only unlinked sentences are short links such as "Harold's first test came from the north" and "We know this from his own words". These make up about 10 per cent of the Hastings story and 14 per cent of the Kalinga story.</p>
+        <p>Two cases showed where judgement is still needed. The Third Buddhist Council is known only from much later Sri Lankan sources, so step 1 of the grading module points towards Legend. Yet many historians accept that some kind of council took place. I graded it Disputed, which the "choose the weaker label" rule does not settle on its own. Ashoka's death in c. 232 BCE raised the opposite problem. The event is certain and only the year is approximate, so the label stays Verified and the doubt moves into the "c." of the date.</p>
+
+        <h3 id="rq2">9.2 RQ2: what modularity changes</h3>
+        <p>The whole skill holds 5,452 words across eight files. SKILL.md accounts for 759 of them, about 14 per cent. Before a task begins, the agent sees only the 45-word description.</p>
+      </div>
+
+      <div class="table-wrap">
+        <table class="data">
+          <caption>Words the agent reads in each mode of use</caption>
+          <thead><tr><th scope="col">Mode</th><th scope="col">Files opened</th><th scope="col" class="num">Words read</th><th scope="col" class="num">Share of skill</th></tr></thead>
+          <tbody>
+            <tr><td>Before any task</td><td>Description only</td><td class="num">45</td><td class="num">1%</td></tr>
+            <tr><td>Timeline only</td><td>SKILL.md, modules 1, 2, 3, 4 and 6</td><td class="num">2,787</td><td class="num">51%</td></tr>
+            <tr><td>Story only</td><td>SKILL.md, modules 1, 2, 3, 5 and 6</td><td class="num">2,938</td><td class="num">54%</td></tr>
+            <tr><td>Full</td><td>SKILL.md and modules 1 to 6</td><td class="num">3,275</td><td class="num">60%</td></tr>
+            <tr><td>Single file (for comparison)</td><td>Everything, every time</td><td class="num">5,452</td><td class="num">100%</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="prose">
+        <p>A full run reads 40 per cent less than a single-file version of the same content, and a timeline-only run reads 49 per cent less. Most of the saving comes from the worked examples, which are long and are only needed when the agent is unsure what good output looks like.</p>
+        <p>The second benefit is easier to see than to count. Because each concern lives in its own file, a change has a clear home. Rules about dates sit only in module 4, and advice on tone sits only in module 5, so revising one does not risk breaking the other. Each module also ends with its own checks, which gives a reviewer a short list to test against. This benefit is a design observation; I have not yet measured it with other editors.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 10 DISCUSSION -->
+<section class="sec" id="discussion">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§10</div>
+    <div class="sec-body prose">
+      <h2>Discussion</h2>
+      <p>The main finding is that source criticism can be written down. The habits a history student picks up slowly over years, such as asking who wrote a text, how long after the event and who agrees, translate fairly well into short, ordered instructions. The agent does not need to understand historiography in any deep sense to follow "split compound claims" or "choose the weaker label when unsure".</p>
+      <p>The labels are less about truth than about honesty of voice. Veritale cannot make a model know more than it knows. What it changes is how the model speaks about what it knows. A legend is still told, but it is told as a legend. That matters for teaching, because Wineburg found that students often read a textbook as if it had no author and no point of view. A story that names its sources at every turn works against that habit.</p>
+      <p>Honesty also costs words. In the Hastings story, Disputed and Legend claims take up 60 per cent of the text even though they are only half of the claims, because each one needs a framing phrase and often both sides of an argument. In the Kalinga story the figure is 41 per cent. The student version with inline labels reads in a more broken-up way than the version for general readers. This is a real trade-off between flow and transparency, and the audience setting in module 1 is where a user can choose between them.</p>
+      <p>The modular design suits humanities work more widely. Modules 2 and 3, the fact table and the grading, could sit under a different output module, for example one that writes museum labels, a podcast script or a classroom quiz. The evidence step would stay the same while the telling changes.</p>
+      <p>Finally, the skill shifts trust but does not remove it. A reader now has to trust the grading instead of the story. Because the same model does both, the labels are only as good as the model's recall of the sources. That is why the next section begins where it does.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 11 LIMITATIONS -->
+<section class="sec" id="limitations">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§11</div>
+    <div class="sec-body">
+      <div class="prose"><h2>Limitations</h2>
+        <p>The project is a working design and a small pilot, not a full evaluation. Its limits are listed here so that anyone who uses or extends it knows where to be careful.</p>
+      </div>
+      <ol class="limits">
+        <li><h3>The agent relies on its own memory</h3><p>Veritale cannot open an archive. It grades claims using whatever the model remembers about the sources, and a model can misremember a source or attach a real story to the wrong text. The rules forbid inventing sources, but a written rule cannot enforce itself.</p></li>
+        <li><h3>A small test</h3><p>Two case studies, checked by one person, cannot show how the skill performs across many topics, models and readers. The results show that the design can work, not how often it does.</p></li>
+        <li><h3>Three labels flatten nuance</h3><p>Verified covers both a royal inscription and a later chronicle that historians trust. Disputed groups an argument about a date with an argument about whether something happened at all. Some legends also keep a kernel of real history.</p></li>
+        <li><h3>Grading needs judgement</h3><p>The Third Buddhist Council shows that two careful graders could disagree. There is no test yet of agreement between different models, or between a model and trained historians.</p></li>
+        <li><h3>The source base has its own bias</h3><p>"Broad agreement among historians" can carry colonial or Eurocentric assumptions, and oral traditions can be pushed into the Legend label unfairly. The skill grades by the age and type of a source, which tends to favour written and official records.</p></li>
+        <li><h3>Words are not tokens</h3><p>The load figures count words, while models count tokens, and the saving only holds if the agent actually follows the instruction to open modules one at a time.</p></li>
+        <li><h3>Language and platform</h3><p>The skill is written in English and has not been tried with sources in Hindi, Sanskrit, Persian or other Indian languages. It also needs an agent that supports skills; in an ordinary chat the files have to be pasted in by hand.</p></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- 12 CONCLUSION -->
+<section class="sec" id="conclusion">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§12</div>
+    <div class="sec-body prose">
+      <h2>Conclusion and future work</h2>
+      <p>Veritale shows that an AI agent can be guided to tell history as a story while keeping its evidence in view. In two very different case studies, the skill kept every famous legend but never let one pass as fact, and its modular layout cut the agent's reading by 40 to 49 per cent compared with a single file. The approach is simple enough for a teacher to read and change, which matters as much as how well it works.</p>
+      <p>The next steps are clear. The skill should be tested on a larger set of topics drawn from many regions and periods, with two trained historians grading the same claims so that agreement can be measured. A retrieval module that links each claim to a digitised source would reduce the reliance on memory. A Hindi version, and a short study with school and college students, would show whether the labels actually help readers think about evidence.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 13 USE -->
+<section class="sec" id="use">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§13</div>
+    <div class="sec-body">
+      <div class="prose">
+        <h2>Using the skill</h2>
+        <p>All the files sit in the repository at the same level, so the skill works as one folder.</p>
+      </div>
+      <ol class="steps">
+        <li><h3>Get the files</h3><p>Download the repository from <a href="https://github.com/Rupeshrajak456/skill-veritale" target="_blank" rel="noopener">GitHub</a> and keep SKILL.md, the six module files and examples.md together in one folder named <code>veritale</code>.</p></li>
+        <li><h3>Add it to an agent</h3><p>Install the folder as a skill in any agent that supports the Agent Skills format. In a plain chat, paste SKILL.md first and then each module when the agent reaches that step.</p></li>
+        <li><h3>Ask a history question</h3><p>For example: "Tell the story of the Battle of Plassey for my class", or "Give me an evidence-graded timeline of the fall of Vijayanagara."</p></li>
+        <li><h3>Read the labels</h3><p>Check the timeline labels and the "What we are unsure about" note, then follow up on anything marked Disputed or Legend.</p></li>
+      </ol>
+      <div class="files-dl">
+        <a class="file-link" href="SKILL.md" download>SKILL.md</a>
+        <a class="file-link" href="module-1-intake.md" download>module-1-intake.md</a>
+        <a class="file-link" href="module-2-fact-table.md" download>module-2-fact-table.md</a>
+        <a class="file-link" href="module-3-evidence-grading.md" download>module-3-evidence-grading.md</a>
+        <a class="file-link" href="module-4-timeline.md" download>module-4-timeline.md</a>
+        <a class="file-link" href="module-5-narrative.md" download>module-5-narrative.md</a>
+        <a class="file-link" href="module-6-uncertainty-note.md" download>module-6-uncertainty-note.md</a>
+        <a class="file-link" href="examples.md" download>examples.md</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 14 REFERENCES -->
+<section class="sec" id="references">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§14</div>
+    <div class="sec-body prose">
+      <h2>References</h2>
+      <ul class="refs">
+        <li>Anthropic. (2025, October 16). <em>Equipping agents for the real world with Agent Skills</em>. Anthropic Engineering. <a href="https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills" target="_blank" rel="noopener">https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills</a></li>
+        <li>Bloch, M. (1953). <em>The historian's craft</em> (P. Putnam, Trans.). Alfred A. Knopf.</li>
+        <li>Carr, E. H. (1961). <em>What is history?</em> Macmillan.</li>
+        <li>Davis, R. H. C., &amp; Chibnall, M. (Eds. &amp; Trans.). (1998). <em>The Gesta Guillelmi of William of Poitiers</em>. Clarendon Press.</li>
+        <li>Guyatt, G. H., Oxman, A. D., Vist, G. E., Kunz, R., Falck-Ytter, Y., Alonso-Coello, P., &amp; Schünemann, H. J. (2008). GRADE: An emerging consensus on rating quality of evidence and strength of recommendations. <em>BMJ, 336</em>(7650), 924–926.</li>
+        <li>Huang, L., Yu, W., Ma, W., Zhong, W., Feng, Z., Wang, H., Chen, Q., Peng, W., Feng, X., Qin, B., &amp; Liu, T. (2025). A survey on hallucination in large language models: Principles, taxonomy, challenges, and open questions. <em>ACM Transactions on Information Systems, 43</em>(2), 1–55.</li>
+        <li>Hultzsch, E. (1925). <em>Inscriptions of Asoka</em> (Corpus Inscriptionum Indicarum, Vol. 1). Clarendon Press.</li>
+        <li>Lawson, M. K. (2002). <em>The Battle of Hastings 1066</em>. Tempus.</li>
+        <li>Morillo, S. (Ed.). (1996). <em>The Battle of Hastings: Sources and interpretations</em>. Boydell Press.</li>
+        <li>Nielsen, J. (2006, December 3). <em>Progressive disclosure</em>. Nielsen Norman Group. <a href="https://www.nngroup.com/articles/progressive-disclosure/" target="_blank" rel="noopener">https://www.nngroup.com/articles/progressive-disclosure/</a></li>
+        <li>Strong, J. S. (1983). <em>The legend of King Aśoka: A study and translation of the Aśokāvadāna</em>. Princeton University Press.</li>
+        <li>Thapar, R. (1961). <em>Aśoka and the decline of the Mauryas</em>. Oxford University Press.</li>
+        <li>Wineburg, S. S. (1991). Historical problem solving: A study of the cognitive processes used in the evaluation of documentary and pictorial evidence. <em>Journal of Educational Psychology, 83</em>(1), 73–87.</li>
+        <li>Wineburg, S. (2001). <em>Historical thinking and other unnatural acts: Charting the future of teaching the past</em>. Temple University Press.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 15 CITE -->
+<section class="sec" id="cite">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§15</div>
+    <div class="sec-body">
+      <div class="prose">
+        <h2>Cite this project</h2>
+        <p>If you use Veritale in your own work, please cite it in one of the forms below.</p>
+      </div>
+      <div class="cite">
+        <div class="tabs" role="tablist" aria-label="Citation style" id="cite-tabs">
+          <button role="tab" aria-selected="true" data-style="apa">APA 7</button>
+          <button role="tab" aria-selected="false" data-style="mla">MLA 9</button>
+          <button role="tab" aria-selected="false" data-style="chicago">Chicago</button>
+          <button role="tab" aria-selected="false" data-style="bibtex">BibTeX</button>
+        </div>
+        <div class="cite-box">
+          <pre id="cite-text" tabindex="0"></pre>
+          <button type="button" class="btn btn-solid" id="cite-copy">Copy citation</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 AUTHOR -->
+<section class="sec sec-author" id="author">
+  <div class="wrap sec-grid">
+    <div class="sec-num">§16</div>
+    <div class="sec-body">
+      <div class="prose"><h2>About the author</h2></div>
+      <div class="author">
+        <div class="author-seal" aria-hidden="true"><span>RR</span></div>
+        <div class="author-main">
+          <h3 class="author-name">Rupesh Rajak</h3>
+          <p class="author-aff">M.A., Digital Humanities and Social Sciences<br>Indian Institute of Technology (Indian School of Mines) Dhanbad</p>
+          <div class="prose">
+            <p>Rupesh Rajak is pursuing an M.A. in Digital Humanities and Social Sciences at the Indian Institute of Technology (Indian School of Mines) Dhanbad (2025–2027). He graduated in History (Honours) from Binod Bihari Mahto Koyalanchal University (BBMKU).</p>
+            <p>In the summer break of 2026 he spent six weeks on mining-community rehabilitation and CSR-related field activities. He completed a Def-Space winter internship at the Bharat Space Education Research Centre (December 2025–26) and took part in a hands-on workshop on artificial intelligence and machine learning on 16 and 17 January 2026.</p>
+          </div>
+          <a class="btn btn-solid mail" href="mailto:25ma0009@iitism.ac.in">25ma0009@iitism.ac.in</a>
+        </div>
+      </div>
+
+      <h3 class="cv-title">Education and experience</h3>
+      <ol class="cv">
+        <li><span class="cv-when">2025–2027</span><span class="cv-what">M.A., Digital Humanities and Social Sciences, IIT (ISM) Dhanbad</span></li>
+        <li><span class="cv-when">Summer 2026</span><span class="cv-what">Six weeks of mining-community rehabilitation and CSR-related field activities</span></li>
+        <li><span class="cv-when">16–17 January 2026</span><span class="cv-what">Hands-on Workshop on Artificial Intelligence and Machine Learning</span></li>
+        <li><span class="cv-when">December 2025–26</span><span class="cv-what">Def-Space winter internship, Bharat Space Education Research Centre</span></li>
+        <li><span class="cv-when">Undergraduate</span><span class="cv-what">B.A. History (Honours), BBMKU</span></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-inner">
+    <p class="footer-brand"><span class="seal-mini" aria-hidden="true">V</span>Veritale</p>
+    <p>© 2026 Rupesh Rajak. The skill files are released under the MIT License.</p>
+    <p><a href="https://github.com/Rupeshrajak456/skill-veritale" target="_blank" rel="noopener">GitHub repository</a> <span aria-hidden="true">|</span> <a href="#cite">Cite</a> <span aria-hidden="true">|</span> <a href="mailto:25ma0009@iitism.ac.in">Contact</a></p>
+  </div>
+</footer>
+
+<button class="to-top" id="to-top" type="button" aria-label="Back to top">↑</button>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
